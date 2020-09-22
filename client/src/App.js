@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import NavBar from "./components/Navbar";
 import ThingsDemo from "./things/ThingsDemo";
 import { Container } from "semantic-ui-react";
+import Products from "./products/Products";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/thingsDemo" component={ThingsDemo} />
+          <Route exact path="/products" component={Products} />
         </Switch>
       </Container>
     </>
