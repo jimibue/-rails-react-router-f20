@@ -6,7 +6,12 @@ class Api::ProductsController < ApplicationController
   end
 
   def show
-    render json: @product
+    # binding.pry
+    # render json: @product
+    render json: @product.to_json(include: [:reviews])
+    # render json: @product.to_json(:include => {
+    #                                 :reviews => { only: [:text, :id] },
+    #                               })
   end
 
   def create

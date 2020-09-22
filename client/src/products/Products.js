@@ -27,6 +27,11 @@ const Products = () => {
           <Card.Meta>{product.department}</Card.Meta>
           <Card.Description>{product.description}</Card.Description>
         </Card.Content>
+        <Card.Content extra>
+          <Button as={Link} to={`/products/${product.id}`} color="blue">
+            View
+          </Button>
+        </Card.Content>
       </Card>
     ));
   };

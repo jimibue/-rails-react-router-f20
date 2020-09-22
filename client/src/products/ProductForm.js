@@ -26,6 +26,7 @@ const ProductForm = ({ history }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
+      <p onClick={history.goBack}>back</p>
       <Header as="h1">New Product</Header>
       <Form.Group widths="equal">
         <Form.Input
