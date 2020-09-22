@@ -17,6 +17,7 @@ function App() {
           <Route exact path="/thingsDemo" component={ThingsDemo} />
           <Route exact path="/products" component={Products} />
           <Route exact path="/products/new" component={ProductForm} />
+          {/* <ProductForm /> would not have access to react router props -history params, etc need a hook, or in class withRouter HOC */}
         </Switch>
       </Container>
     </>
