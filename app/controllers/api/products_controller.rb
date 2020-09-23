@@ -6,7 +6,9 @@ class Api::ProductsController < ApplicationController
   end
 
   def show
-    render json: @product
+    # render json: @product
+    # if i were to pry @product has the review info
+    render json: @product.to_json(include: [:reviews])
   end
 
   def create
