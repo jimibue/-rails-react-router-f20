@@ -4,17 +4,19 @@ import { withRouter } from "react-router-dom";
 import Axios from "axios";
 // import { useParams } from "react-router-dom"; with hooks from react-router-dom
 
-const ReviewForm = ({ productId, match, addReviewHandler }) => {
-  const [text, setText] = useState("");
+const ReviewForm = ({
+  productId,
+  match,
+  addReviewHandler,
+  updateReviewHandler,
+  id,
+  text: textProps, // had to rename this to textProps becuase I was already us text from userState
+}) => {
+  const [text, setText] = useState(textProps ? textProps : "");
   // const { id } = useParams(); //using hook
   // console.log("from hook", id);
-  function handleSubmit() {
-    console.log("here");
 
-    console.log("match:", match);
-    console.log(productId);
-
-    // what info do I need to create a review -> productid and text
+  function addReview() {
     Axios.post(`/api/products/${productId}/reviews`, { text })
       .then((res) => {
         // filling out your model/controller and routes via rails
@@ -29,6 +31,28 @@ const ReviewForm = ({ productId, match, addReviewHandler }) => {
       .catch((err) => {
         debugger;
       });
+  }
+  function updateReview() {
+    // lets see if we have productId and id here
+    Axios.put(`/api/products/${productId}/reviews/${id}`, { text })
+      .then((res) => {
+        //res.data is  the updated object
+        // now focus on updating ui but reviews stat lives in productView
+        updateReviewHandler(res.data);
+      })
+      .catch((err) => {
+        alert("update broken");
+      });
+  }
+
+  function handleSubmit() {
+    // if there is an id that means it has already been create so do update things
+    if (id) {
+      // update logic
+      updateReview();
+    } else {
+      addReview();
+    }
   }
 
   return (

@@ -69,6 +69,21 @@ const ProductView = ({ match, history }) => {
     setProduct({ ...product, reviews: [...product.reviews, review] });
   }
 
+  function updateReview(review) {
+    console.log(review);
+    //similar to addReview, accept I don't want to add a review I want to replace updated Review
+    // we will use map here
+
+    // whats going here
+    // review is the thing back from out db call
+    // and r i the current iteration review
+    const updatedReviews = product.reviews.map((r) =>
+      r.id === review.id ? review : r
+    );
+
+    setProduct({ ...product, reviews: updatedReviews });
+  }
+
   function renderReviews() {
     // this a safeguard on reviews being null
     if (!product.reviews) {
@@ -78,7 +93,14 @@ const ProductView = ({ match, history }) => {
       return <p>no reviews</p>;
     }
     return product.reviews.map((r) => {
-      return <Review key={r.id} {...r} />;
+      return (
+        <Review
+          key={r.id}
+          {...r}
+          productId={product.id}
+          updateReviewHandler={updateReview}
+        />
+      );
     });
   }
 
@@ -116,8 +138,8 @@ export default ProductView;
 
 // things we need to do
 // update in rails review controller **
-// toggle UI
-// Try to Reuse or form -> hand both create and update
+// toggle UI **
+// Try to Reuse or form -> hand both create and update *
 // update should have existing text by default
 // figure out how to add updated review to our product
 // axios call => put /api/products/:product_id/reviews/:id

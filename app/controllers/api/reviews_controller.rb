@@ -34,6 +34,8 @@ class Api::ReviewsController < ApplicationController
   end
 
   def destroy
+    review = @review.destroy
+    render json: review
   end
 
   private
