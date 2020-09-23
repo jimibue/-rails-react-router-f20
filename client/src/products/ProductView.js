@@ -22,6 +22,21 @@ const ProductView = ({ match, history }) => {
       });
   }
 
+  function editReview(id) {
+    axios
+      .put(`/api/products/${product.id}/reviews/${id}`, { text })
+      .then((res) => {
+        const updatedReviews = product.reviews.map((r) =>
+          r.id === res.data.id ? res.data : r
+        );
+        setText("");
+        setProduct({ ...product, reviews: updatedReviews });
+      })
+      .catch((e) => {
+        alert("error in edit");
+      });
+  }
+
   function handleSubmit() {
     createReview();
   }
@@ -53,8 +68,8 @@ const ProductView = ({ match, history }) => {
         {reviews.map((review) => (
           <p key={review.id}>
             {review.text}{" "}
+            <span onClick={() => editReview(review.id)}>&#9998;</span>
             <span onClick={() => deleteReview(review.id)}> &#128465;</span>
-            <span onClick={() => deleteReview(review.id)}>&#9998;</span>
           </p>
         ))}
         <h3>Add Review</h3>

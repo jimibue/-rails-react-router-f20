@@ -1,6 +1,6 @@
 class Api::ReviewsController < ApplicationController
   before_action :set_product
-  before_action :set_review, only: [:destroy]
+  before_action :set_review, only: [:destroy, :update]
 
   def index
   end
@@ -18,6 +18,11 @@ class Api::ReviewsController < ApplicationController
   end
 
   def update
+    if (@review.update(review_params))
+      render json: @review
+    else
+      render json: @review.errors, status: 422
+    end
   end
 
   def destroy
