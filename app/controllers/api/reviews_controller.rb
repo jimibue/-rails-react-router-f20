@@ -1,5 +1,6 @@
 class Api::ReviewsController < ApplicationController
   before_action :set_product
+  before_action :set_review, only: [:update, :destroy]
 
   # we aren't going use this
   def index
@@ -23,7 +24,13 @@ class Api::ReviewsController < ApplicationController
     end
   end
 
+  # this is not tested, I think it works
   def update
+    if (@review.update(review_params))
+      render json: @review # one review that was updated
+    else
+      render json: @review.errors, status: 422
+    end
   end
 
   def destroy
@@ -37,5 +44,9 @@ class Api::ReviewsController < ApplicationController
 
   def set_product
     @product = Product.find(params[:product_id])
+  end
+
+  def set_review
+    @review = @product.reviews.find(params[:id])
   end
 end

@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import Axios from "axios";
 // import { useParams } from "react-router-dom"; with hooks from react-router-dom
 
-const ReviewForm = ({ productId, match }) => {
+const ReviewForm = ({ productId, match, addReviewHandler }) => {
   const [text, setText] = useState("");
   // const { id } = useParams(); //using hook
   // console.log("from hook", id);
@@ -17,13 +17,14 @@ const ReviewForm = ({ productId, match }) => {
     // what info do I need to create a review -> productid and text
     Axios.post(`/api/products/${productId}/reviews`, { text })
       .then((res) => {
-        debugger;
         // filling out your model/controller and routes via rails
         // doing your UI in react
         // axios/api calls to connect the two
 
         // checking to see if I can create to db *DONE* res.data is the review
         // worry about UI
+        addReviewHandler(res.data);
+        setText("");
       })
       .catch((err) => {
         debugger;

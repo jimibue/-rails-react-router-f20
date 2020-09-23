@@ -1,13 +1,16 @@
 import Axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Button, Form, Header, Segment } from "semantic-ui-react";
+import Review from "./Review";
 import ReviewForm from "./ReviewForm";
 
 // get match, history from props, via react router
 const ProductView = ({ match, history }) => {
   // expecting product to be an object {id: text:,...}
+
+  // product {id:, name, ..reviews:[]}
   const [product, setProduct] = useState({});
-  const [reviews, setReviews] = useState([]);
+  // const [reviews, setReviews] = useState([]);
 
   // want to load product on mount
   useEffect(() => {
@@ -43,14 +46,41 @@ const ProductView = ({ match, history }) => {
       });
 
     // this get the review for a give product
-    Axios.get(`/api/products/${match.params.id}/reviews`)
-      .then((res) => {
-        setReviews(res.data);
-      })
-      .catch((err) => {
-        alert("get reviews failed");
-      });
+    //   Axios.get(`/api/products/${match.params.id}/reviews`)
+    //     .then((res) => {
+    //       setReviews(res.data);
+    //     })
+    //     .catch((err) => {
+    //       alert("get reviews failed");
+    //     });
   }, []);
+  function addReview(review) {
+    console.log(review);
+    console.log(product);
+    // we need to add review to reviews in our product state
+    // brain teasers coding challengings interview questions
+    // review ={id, text}
+    // product =
+    //{id:, name,  ..reviews:[{id, text},{id, text}, need to review here]}
+
+    // first part of solving a brain teaser is understanding what you have to do
+    // understand what your data looks, what you need to return/change, etc
+
+    setProduct({ ...product, reviews: [...product.reviews, review] });
+  }
+
+  function renderReviews() {
+    // this a safeguard on reviews being null
+    if (!product.reviews) {
+      return; // breaks out of function
+    }
+    if (product.reviews.length === 0) {
+      return <p>no reviews</p>;
+    }
+    return product.reviews.map((r) => {
+      return <Review key={r.id} {...r} />;
+    });
+  }
 
   return (
     <div>
@@ -63,7 +93,7 @@ const ProductView = ({ match, history }) => {
         <p>{product.description}</p>
 
         <Header as="h3">Reviews</Header>
-        <ReviewForm productId={product.id} />
+        <ReviewForm addReviewHandler={addReview} productId={product.id} />
         {/* this is with own axios call to get reviews */}
         {/* {reviews.map((r) => (
           <p key={r.id}>{r.text}</p>
@@ -71,8 +101,7 @@ const ProductView = ({ match, history }) => {
 
         {/* this is with  axios call to get product, where we added
          reviews to controller in product */}
-        {product.reviews &&
-          product.reviews.map((r) => <p key={r.id}>{r.text}</p>)}
+        {renderReviews()}
       </Segment>
       <br />
       <br />
@@ -84,3 +113,11 @@ const ProductView = ({ match, history }) => {
 };
 
 export default ProductView;
+
+// things we need to do
+// update in rails review controller **
+// toggle UI
+// Try to Reuse or form -> hand both create and update
+// update should have existing text by default
+// figure out how to add updated review to our product
+// axios call => put /api/products/:product_id/reviews/:id
