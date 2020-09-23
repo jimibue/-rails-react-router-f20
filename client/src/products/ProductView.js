@@ -1,6 +1,7 @@
 import Axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Button, Header, Segment } from "semantic-ui-react";
+import { Button, Form, Header, Segment } from "semantic-ui-react";
+import ReviewForm from "./ReviewForm";
 
 // get match, history from props, via react router
 const ProductView = ({ match, history }) => {
@@ -61,6 +62,8 @@ const ProductView = ({ match, history }) => {
         </Header>
         <p>{product.description}</p>
 
+        <Header as="h3">Reviews</Header>
+        <ReviewForm productId={product.id} />
         {/* this is with own axios call to get reviews */}
         {/* {reviews.map((r) => (
           <p key={r.id}>{r.text}</p>
